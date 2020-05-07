@@ -46,9 +46,37 @@ export const SecondFading =
               opacity: 1,
               transform: 'scale(1)',
             }),
-            animate(1000, style({
+            animate(100, style({
               opacity: 0,
-              transform: 'scale(0)',
+              transform: 'translateY(-200px)',
+            }))
+          ])
+        ])
+
+export const LevelCompleted =
+        trigger('levelCompleted', [
+          state('in', style({
+            opacity: 1,
+            transform: 'scale(1)',
+          })),
+          transition(':enter', [
+            style({
+              opacity: 0,
+              transform: 'translateY(200px)',
+            }),
+            animate(100, style({
+              opacity: 1,
+              transform: 'translateY(0)',
+            }))
+          ]),
+          transition(':leave', [
+            style({
+              opacity: 1,
+              transform: 'translateY(0)',
+            }),
+            animate(100, style({
+              opacity: 0,
+              transform: 'translateY(-200px)',
             }))
           ])
         ])

@@ -1,38 +1,35 @@
-<div [@secondFading] class="level w-50 mx-auto">
-  <div class="header my-2">
-    <h2 class="text-center">LEVEL 1</h2>
-    <span>{{ cards.length - index + 1 }}</span>
+<div class="level">
+  <div class="playing" *ngIf="!levelCompleted && !levelLost" [@secondFading]>
+    <div class="header my-2">
+      <h2 class="text-center">LEVEL 1</h2>
+      <span>{{ cards.length - index + 1 }}</span>
+    </div>
+    <div class="content">
+      <div [@firstFading] class="d-flex justify-content-center">
+        <div [@firstFading] *ngIf="currentCards[0].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(0), 'card-neg': isPos}" (click)="nextCard(0)">
+          <h2>{{ currentCards[0].number }}</h2>
+        </div>
+        <div [@firstFading] *ngIf="currentCards[1].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(1), 'card-neg': isPos}" (click)="nextCard(1)">
+          <h2>{{ currentCards[1].number }}</h2>
+        </div>
+        <div [@firstFading] *ngIf="currentCards[2].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(2), 'card-neg': isPos}" (click)="nextCard(2)">
+          <h2>{{ currentCards[2].number }}</h2>
+        </div>
+        <div [@firstFading] *ngIf="currentCards[3].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(3), 'card-neg': isPos}" (click)="nextCard(3)">
+          <h2>{{ currentCards[3].number }}</h2>
+        </div>
+      </div>
+      <div class="result">
+        <h2 class="text-center">{{ result }}</h2>
+      </div>
+    </div>
   </div>
-  <div *ngIf="!levelLost; else lost" class="content">
-    <div *ngIf="levelCompleted && !levelLost; else playing">
-      <h2 class="text-center">Level Completed</h2>
-      <button class="btn btn-primary" (click)="reset()">Play again</button>
-    </div>
-    <div class="result">
-      <h2 class="text-center">{{ result }}</h2>
-    </div>
+  <div [@levelCompleted] *ngIf="levelLost" class="level-result level-lost">
+    <h2 class="text-danger">You lost!</h2>
+    <button class="btn-outline-danger" (click)="reset()">Play again</button>
+  </div>
+  <div [@levelCompleted] *ngIf="levelCompleted" class="level-result level-completed">
+    <h2 class="text-primary">You won!</h2>
+    <button class="btn-outline-danger" (click)="reset()">Play again</button>
   </div>
 </div>
-  <ng-template #playing>
-    <div [@secondFading]="'stateFirstFading'" class="d-flex justify-content-center">
-      <div [@firstFading] *ngIf="currentCards[0].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(0), 'card-neg': isPos}" (click)="nextCard(0)">
-        <h2>{{ currentCards[0].number }}</h2>
-      </div>
-      <div [@firstFading] *ngIf="currentCards[1].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(1), 'card-neg': isPos}" (click)="nextCard(1)">
-        <h2>{{ currentCards[1].number }}</h2>
-      </div>
-      <div [@firstFading] *ngIf="currentCards[2].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(2), 'card-neg': isPos}" (click)="nextCard(2)">
-        <h2>{{ currentCards[2].number }}</h2>
-      </div>
-      <div [@firstFading] *ngIf="currentCards[3].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(3), 'card-neg': isPos}" (click)="nextCard(3)">
-        <h2>{{ currentCards[3].number }}</h2>
-      </div>
-    </div>
-</ng-template>
-
-<ng-template #lost>
-  <div [@firstFading]>
-    <h2 class="text-danger">You lost!</h2>
-    <button class="btn btn-primary" (click)="reset()">Play again</button>
-  </div>
-</ng-template>

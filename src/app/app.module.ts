@@ -5,16 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlayingComponent } from './level/playing/playing.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LevelModule } from './level/level.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayingComponent
+    PlayingComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    LevelModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

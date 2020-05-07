@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from '../models/card.model';
-import { FirstFading, SecondFading } from '../animations/fading.animation';
+import { FirstFading, SecondFading, LevelCompleted } from '../animations/fading.animation';
 
 @Component({
   selector: 'app-playing',
   templateUrl: './playing.component.html',
   styleUrls: ['./playing.component.css'],
-  animations: [FirstFading, SecondFading]
+  animations: [FirstFading, SecondFading, LevelCompleted]
 })
 export class PlayingComponent implements OnInit {
 
-  stateFirstFading: string = '';
+  stateCompletedLevel: string = '';
   levelCompleted: boolean = false;
   levelLost: boolean = false;
   cards: Card[] = [];
