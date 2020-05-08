@@ -13,6 +13,7 @@ export class PlayingComponent implements OnInit {
   stateCompletedLevel: string = '';
   levelCompleted: boolean = false;
   levelLost: boolean = false;
+  reservedCard: Card;
   cards: Card[] = [];
   currentCards: Card[] = [];
   index: number = 0;
@@ -55,7 +56,7 @@ export class PlayingComponent implements OnInit {
     this.nextCard();
   }
 
-  nextCard(index: number = -1) {
+  nextCard(index: number = -1, idDraggingCard: boolean = false) {
     if(index === -1) {
       console.log(this.currentCards);
       this.currentCards[0].number = this.cards[0].number;
@@ -76,7 +77,10 @@ export class PlayingComponent implements OnInit {
       return;
     }
 
-    this.result += this.currentCards[index].number;
+    if(!idDraggingCard) {
+      this.result += this.currentCards[index].number;
+    }
+
     this.currentCards[index].number = this.cards[this.index].number;
     this.currentCards[index].isShow = false;
 
@@ -101,5 +105,44 @@ export class PlayingComponent implements OnInit {
 
   reset() {
     this.initialization();
+  }
+  
+  onDragStart(event) {
+    event.dataTransfer.setData('text/plain', event.target.id);
+  }
+
+  onDragOver(event) {
+    event.preventDefault();
+  }
+
+  onDrop(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("text");
+
+    let copyDiv = document.getElementById(data).cloneNode();
+    let copyH2 = document.getElementById(data).firstChild.cloneNode();
+    let id = document.getElementById(data).id;
+    copyH2.textContent = document.getElementById(data).firstChild.textContent;
+    copyDiv.appendChild(copyH2);
+    event.target.appendChild(copyDiv);
+    
+    if(copyDiv.parentElement.childNodes.length > 1) {
+      copyDiv.parentElement.lastChild.remove();
+
+      return;
+    }
+    document.getElementsByClassName('card')[4].setAttribute('id', '4');
+
+    this.reservedCard = new Card(+copyH2.textContent);
+
+    this.nextCard(+id, true);
+    copyH2.addEventListener('click', (event) => {
+      event.target.removeEventListener;
+      document.getElementById('4').remove();
+      this.result += this.reservedCard.number;
+      if(this.isLost()) {
+        this.levelLost = true;
+      }
+    });
   }
 }

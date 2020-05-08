@@ -5,22 +5,16 @@
       <span>{{ cards.length - index + 1 }}</span>
     </div>
     <div class="content">
-      <div [@firstFading] class="d-flex justify-content-center">
-        <div [@firstFading] *ngIf="currentCards[0].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(0), 'card-neg': isPos}" (click)="nextCard(0)">
-          <h2>{{ currentCards[0].number }}</h2>
-        </div>
-        <div [@firstFading] *ngIf="currentCards[1].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(1), 'card-neg': isPos}" (click)="nextCard(1)">
-          <h2>{{ currentCards[1].number }}</h2>
-        </div>
-        <div [@firstFading] *ngIf="currentCards[2].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(2), 'card-neg': isPos}" (click)="nextCard(2)">
-          <h2>{{ currentCards[2].number }}</h2>
-        </div>
-        <div [@firstFading] *ngIf="currentCards[3].isShow" class="card mx-2" [ngClass]="{'card-pos': !isPos(3), 'card-neg': isPos}" (click)="nextCard(3)">
-          <h2>{{ currentCards[3].number }}</h2>
+      <div [@firstFading] #currentCardsList class="d-flex justify-content-center w-100">
+        <div [@firstFading] draggable="true" (dragstart)="onDragStart($event)" *ngFor="let card of currentCards; let i = index" id="{{i}}" class="card mx-2" [ngClass]="{'card-pos': !isPos(i), 'card-neg': isPos}" (click)="nextCard(i)">
+          <h2>{{ card.number }}</h2>
         </div>
       </div>
-      <div class="result">
-        <h2 class="text-center">{{ result }}</h2>
+      <div class="footer">
+        <div class="result">
+          <h2 class="text-center">{{ result }}</h2>
+        </div>
+        <div (dragover)="onDragOver($event)" (drop)="onDrop($event)" class="drag-parent"> </div>
       </div>
     </div>
   </div>
