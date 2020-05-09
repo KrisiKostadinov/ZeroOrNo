@@ -17,10 +17,16 @@ export class PlayingComponent implements OnInit {
   cards: Card[] = [];
   currentCards: Card[] = [];
   index: number = 0;
-
   result: number = 10;
 
+  currentLevel: number = 1;
+
   initialization() {
+    this.nextLevel();
+    this.generateNumbers(this.currentLevel);
+  }
+  
+  nextLevel() {
     this.levelCompleted = false;
     this.levelLost = false;
     this.currentCards = [];
@@ -30,8 +36,6 @@ export class PlayingComponent implements OnInit {
     }
     this.index = 0;
     this.result = 10;
-
-    this.generateNumbers();
   }
 
   ngOnInit(): void {
@@ -42,8 +46,8 @@ export class PlayingComponent implements OnInit {
     return this.currentCards[index].number < 0;
   }
 
-  generateNumbers() {
-    for(let i = 1; i < 10; i++) {
+  generateNumbers(to: number = null) {
+    for(let i = 1; i < 10 + to - 1; i++) {
       const numberPos = Math.floor(Math.random() * 6) + 1;
       const numberNeg = -Math.floor(Math.random() * 6) - 1;
       if(numberPos % 2 === 0) {
@@ -56,13 +60,11 @@ export class PlayingComponent implements OnInit {
     this.nextCard();
   }
 
-  nextCard(index: number = -1, idDraggingCard: boolean = false) {
+  nextCard(index: number = -1, isDraggingCard: boolean = false) {
     if(index === -1) {
-      console.log(this.currentCards);
-      this.currentCards[0].number = this.cards[0].number;
-      this.currentCards[1].number = this.cards[1].number;
-      this.currentCards[2].number = this.cards[2].number;
-      this.currentCards[3].number = this.cards[3].number;
+      for(let i = 0; i < 4; i++) {
+        this.currentCards[i].number = this.cards[i].number;
+      }
     }
 
     if(index === -1) {
@@ -70,25 +72,20 @@ export class PlayingComponent implements OnInit {
       return;
     }
     
-    if(this.index === this.cards.length) {
-      this.index++;
-      this.levelCompleted = true;
-      
+    if(this.isCompletedLevel(isDraggingCard)) {
       return;
     }
 
-    if(!idDraggingCard) {
+    if(!isDraggingCard) {
       this.result += this.currentCards[index].number;
+      this.currentCards[index].number = this.cards[this.index].number;
+      this.currentCards[index].isShow = false;
+      this.index++;
     }
-
-    this.currentCards[index].number = this.cards[this.index].number;
-    this.currentCards[index].isShow = false;
 
     if(this.isLost()) {
-      this.levelLost = true;
+      return;
     }
-
-    this.index++;
 
     setTimeout(() => {
       this.currentCards[index].isShow = true;
@@ -97,6 +94,7 @@ export class PlayingComponent implements OnInit {
 
   isLost() {
     if(this.result > 20 || this.result <= 0) {
+      this.levelLost = true;
       return true;
     }
 
@@ -105,6 +103,17 @@ export class PlayingComponent implements OnInit {
 
   reset() {
     this.initialization();
+  }
+
+  isCompletedLevel(isDraggingCard: boolean = false) {
+    if(this.index >= this.cards.length && !isDraggingCard) {
+      this.levelCompleted = true;
+      this.currentLevel++;
+
+      return true;
+    }
+
+    return false;
   }
   
   onDragStart(event) {
@@ -141,8 +150,13 @@ export class PlayingComponent implements OnInit {
       document.getElementById('4').remove();
       this.result += this.reservedCard.number;
       if(this.isLost()) {
-        this.levelLost = true;
+        return;
       }
+      if(this.isCompletedLevel()) {
+        return;
+      }
+
+      this.index++;
     });
   }
 }

@@ -1,7 +1,8 @@
 <div class="level">
+  <h2 class="text-center">0 - 21</h2>
   <div class="playing" *ngIf="!levelCompleted && !levelLost" [@secondFading]>
     <div class="header my-2">
-      <h2 class="text-center">LEVEL 1</h2>
+      <h2 class="text-center">LEVEL {{ currentLevel }}</h2>
       <span>{{ cards.length - index + 1 }}</span>
     </div>
     <div class="content">
@@ -19,11 +20,13 @@
     </div>
   </div>
   <div [@levelCompleted] *ngIf="levelLost" class="level-result level-lost">
+    <h2 class="text-danger">{{ result }}</h2>
     <h2 class="text-danger">You lost!</h2>
     <button class="btn-outline-danger" (click)="reset()">Play again</button>
   </div>
   <div [@levelCompleted] *ngIf="levelCompleted" class="level-result level-completed">
+    <h2 class="text-primary">{{ result }}</h2>
     <h2 class="text-primary">You won!</h2>
-    <button class="btn-outline-danger" (click)="reset()">Play again</button>
+    <button class="btn-outline-primary" (click)="reset()">Next level</button>
   </div>
 </div>

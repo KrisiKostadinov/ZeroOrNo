@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #2c2c2c;
+}
+
+.level > h2 {
+    position: absolute;
+    top: 20px;
+    opacity: 0;
+    transform: translate(-50%, -100px);
+    left: 50%;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 2em;
+    padding: 10px 14px;
+    background-color: #203ff0;
+    box-shadow: 0 0 10px #203ff0;
+    animation: show 1s forwards;
+    animation-delay: 2s;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -100px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
